@@ -1,0 +1,168 @@
+body {
+  background-color: aliceblue;
+}
+
+h1 {
+  text-align: center;
+  font-size: 40px;
+  color:rgb(179, 28, 58);
+  text-shadow: rgb(91 89 89) 0 0 2px;
+  margin: 15px 0 10px;
+}
+
+img {
+  width: 120px;
+  height: 120px;
+}
+
+section {
+  width: 80%;
+  margin: auto;
+}
+
+.nav {
+  text-align: end;
+  margin: 10px 0 15px;
+}
+
+button {
+  text-decoration: none;
+  padding: 10px 15px;
+  margin: 3px;
+  border-radius: 50%;
+  border: none;
+  color: white;
+  font-weight: 700;
+  background-color: rgb(179, 28, 58);
+  cursor: pointer;
+}
+
+#prev:hover, #next:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+.box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card > img:hover {
+  transform: scale(1.2);
+}
+
+.card > span {
+  position: relative;
+  top: -100px;
+  left: 5px;  
+  font-weight: 300;
+  text-shadow: 5px 5px 3px rgb(0 0 0 / 50%);
+}
+
+.card > p {
+  text-align: center;
+  margin: 0 0 25px;
+  font-size: 18px;
+  font-weight: 300;
+  text-shadow: 5px 5px 3px rgb(0 0 0 / 50%);
+}
+
+.info {
+  overflow: hidden;
+  position: absolute;
+  z-index: 2;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height:fit-content;
+  max-width: 420px;
+  background-color: aliceblue;
+  border: 1px solid rgb(225, 237, 248);
+  border-radius: 5%;
+}
+
+.info > img {
+  height: 200px;
+  width: 200px;
+  margin: auto;
+  display: block;
+}
+
+.info > .name {
+  margin: 15px;
+  text-transform: uppercase;
+  font-size: 35px;
+  text-shadow: 5px 5px 3px rgba(0, 0, 0, 0.5);
+  color:rgb(179, 28, 58);
+  font-weight: 600;
+  position: absolute;
+  top: 0;
+}
+
+.info > p {
+  margin: 0;
+  text-align: center;
+  padding-bottom: 10px;
+  font-size: 18px;
+}
+
+.info > .descr {
+  font-size: 16px;
+  font-style: italic;
+  padding: 10px;
+}
+
+.stats {
+  padding: 0 15px;
+  text-transform: uppercase;
+  color:rgb(179, 28, 58);
+}
+
+progress {
+  border: none;
+  height: 8px;
+  vertical-align: middle;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+  background-color: rgb(99, 93, 94);
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  background-color: rgb(179, 28, 58);
+  border-radius: 10px;
+}
+
+.opacity {
+  background: rgba(255, 255, 255, 0.5);
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+}
+
+.span::before, .span::after {
+	content: '';
+	position: absolute;
+  cursor: pointer;    
+  top: 5%;
+  right: 3%;
+	display: block;
+	width: 24px;
+	height: 3px;
+	background: rgb(91, 89, 89);
+}
+
+.span::before {
+	transform: rotate(45deg);
+}
+
+.span::after {
+	transform: rotate(-45deg);
+}
