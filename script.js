@@ -6,6 +6,8 @@ const btnNext = document.querySelector('#next');
 const baseUrl = 'https://pokeapi.co/api/v2/pokemon/';
 let nextUrl, prevUrl, pokemons;
 
+fetchPoki(baseUrl);
+
 async function getData(url) {
   const response = await fetch(url);
   
@@ -29,10 +31,6 @@ async function fetchPoki(url) {
   btnNext.addEventListener('click', goNext);
   disableBtn();
 }
-
-window.addEventListener('load', () => {
-  fetchPoki(baseUrl);
-});
 
 async function createPoki(pokemons) {
   for (let pokemon of pokemons) {
