@@ -21,12 +21,19 @@ async function getData(url) {
 
 async function fetchPoki(url) {
   const { next, previous, results } = await getData(url);
-
   nextUrl = next;
   prevUrl = previous;
   pokemons = results;
 
-  let pokiUrl = [];
+  createPoki(pokemons);
+
+  btnPrev.addEventListener('click', goPrev);
+  btnNext.addEventListener('click', goNext);
+  disableBtn();
+}
+
+async function createPoki(pokemons) {
+  const pokiUrl = [];
 
   for (let pokemon of pokemons) {
     const card = document.createElement('div');
@@ -39,7 +46,6 @@ async function fetchPoki(url) {
     card.append(pokiId, image, name);
 
     name.append(`${pokemon.name}`)
-
     pokiUrl.push(pokemon.url);
 
     await Promise.all(pokiUrl.map(el => getData(el)))
@@ -55,11 +61,6 @@ async function fetchPoki(url) {
     )
     openCard(card, pokemon, image)
   }
-
-  btnPrev.addEventListener('click', goPrev);
-  btnNext.addEventListener('click', goNext);
-
-  disableBtn();
 }
 
 function goPrev() {
@@ -104,8 +105,15 @@ function openCard(card, pokemon, image) {
 
     openCard.append(span, image.cloneNode(), pokiName);
 
-    getData(pokemon.url)
+    generateInfo(pokemon, openCard);
+    closeCard(opacity, openCard);
+  })
+}
+
+function generateInfo(pokemon, openCard) {
+  getData(pokemon.url)
     .then(data => {
+      console.log(pokemon)
       const ability = document.createElement('p');
       openCard.append(ability);
       for (let ab of data.abilities) {
@@ -134,10 +142,9 @@ function openCard(card, pokemon, image) {
         } else {
           stats.innerHTML = `${statsName} <progress value='${value}' max='${otherStat}'></progress> ${value}`;
         }
-        
+
         openCard.append(stats);
       })
-
       return data.species;
     })
     .then(data => {
@@ -155,8 +162,6 @@ function openCard(card, pokemon, image) {
         }
       })
     })
-    closeCard(opacity, openCard);
-  })
 }
 
 function closeCard(opacity, openCard) {
