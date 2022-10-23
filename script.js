@@ -33,23 +33,21 @@ async function fetchPoki(url) {
 }
 
 async function createPoki(pokemons) {
-  const pokiUrl = [];
-
   for (let pokemon of pokemons) {
-    const card = document.createElement('div');
+    var card = document.createElement('div');
     card.className = 'card'
-    const image = document.createElement('img');
+    var image = document.createElement('img');
     const name = document.createElement('p');
-    const pokiId = document.createElement('span')
+    var pokiId = document.createElement('span')
 
     container.append(card);
     card.append(pokiId, image, name);
 
-    name.append(`${pokemon.name}`)
-    pokiUrl.push(pokemon.url);
+    name.append(`${pokemon.name}`);
 
-    await Promise.all(pokiUrl.map(el => getData(el)))
-      .then(url => url.forEach(url => {
+    await fetch(pokemon.url)
+      .then((response) => response.json())
+      .then(url => {
         let sprite = url.sprites.other['official-artwork'].front_default
         || url.sprites.other.home.front_default
         || url.sprites.other.dream_world.front_default
@@ -58,8 +56,8 @@ async function createPoki(pokemons) {
         image.setAttribute('src', `${sprite}`); 
         pokiId.innerHTML = String(url.id).padStart(3, 0);
       })
-    )
-    openCard(card, pokemon, image)
+
+    openCard(card, pokemon, image);
   }
 }
 
@@ -111,9 +109,9 @@ function openCard(card, pokemon, image) {
 }
 
 function generateInfo(pokemon, openCard) {
-  getData(pokemon.url)
+  fetch(pokemon.url)
+    .then(response => response.json())
     .then(data => {
-      console.log(pokemon)
       const ability = document.createElement('p');
       openCard.append(ability);
       for (let ab of data.abilities) {
@@ -144,24 +142,24 @@ function generateInfo(pokemon, openCard) {
         }
 
         openCard.append(stats);
-      })
-      return data.species;
+      });
+
+      return data.species.url;
     })
+  
+    .then(species => fetch(species))
+    .then(response => response.json())
     .then(data => {
-      fetch(data.url)
-      .then(response => response.json())
-      .then(data => {
-        data.flavor_text_entries.reverse();
-        for (let text of data.flavor_text_entries) {
-          if (text.language.name === 'en') {
-            const descr = document.createElement('p');
-            descr.className = 'descr';
-            openCard.append(descr);
-            return descr.innerHTML = text.flavor_text;
-          }
+      data.flavor_text_entries.reverse();
+      for (let text of data.flavor_text_entries) {
+        if (text.language.name === 'en') {
+          const descr = document.createElement('p');
+          descr.className = 'descr';
+          openCard.append(descr);
+          return descr.innerHTML = text.flavor_text;
         }
-      })
-    })
+      }
+    });
 }
 
 function closeCard(opacity, openCard) {
@@ -171,5 +169,5 @@ function closeCard(opacity, openCard) {
       openCard.remove();
       opacity.remove();
     })
-  })
+  });
 }
