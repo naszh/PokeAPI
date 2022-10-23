@@ -89,7 +89,7 @@ button {
 .info > img {
   height: 200px;
   width: 200px;
-  margin: auto;
+  margin: 15px auto 0;
   display: block;
 }
 
@@ -102,6 +102,13 @@ button {
   font-weight: 600;
   position: absolute;
   top: 0;
+}
+
+.ability {
+  border: 2px solid rgb(99, 93, 94);
+  border-radius: 25px;
+  margin: 5px;
+  padding: 2px;
 }
 
 .info > p {

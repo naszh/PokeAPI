@@ -107,20 +107,22 @@ function openCard(card, pokemon, image) {
     getData(pokemon.url)
     .then(data => {
       const ability = document.createElement('p');
-      ability.append('ABILITIES: ');
+      openCard.append(ability);
       for (let ab of data.abilities) {
-        ability.append(`${ab.ability.name} `);
-        openCard.append(ability);
+        const abilityItem = document.createElement('span');
+        abilityItem.className = 'ability';
+        abilityItem.append(`${ab.ability.name} `);
+        ability.append(abilityItem);
       }
 
       const size = document.createElement('p');
+      size.className = 'size';
       size.append(`height: ${data.height}, weight: ${data.weight}`);
       openCard.append(size);
 
       data.stats.map(stat => {
         const value = stat.base_stat;
         const statsName = stat.stat.name;
-
         const stats = document.createElement('div');
         stats.className = 'stats';
 
