@@ -180,4 +180,4 @@ function closeCard(opacity, openCard) {
 //       .catch(err => console.log(`Service Worker: Error: ${err}`));
 //   });
 // }
-
+caches.delete('v1');
