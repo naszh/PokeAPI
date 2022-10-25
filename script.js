@@ -108,58 +108,54 @@ function openCard(card, pokemon, image) {
   })
 }
 
-function generateInfo(pokemon, openCard) {
-  fetch(pokemon.url)
-    .then(response => response.json())
-    .then(data => {
-      const ability = document.createElement('p');
-      openCard.append(ability);
-      for (let ab of data.abilities) {
-        const abilityItem = document.createElement('span');
-        abilityItem.className = 'ability';
-        abilityItem.append(`${ab.ability.name} `);
-        ability.append(abilityItem);
+async function generateInfo(pokemon, openCard) {
+  const resp = await fetch(pokemon.url)
+  const data = await resp.json()
+
+  const ability = document.createElement('p');
+  openCard.append(ability);
+  for (let ab of data.abilities) {
+    const abilityItem = document.createElement('span');
+    abilityItem.className = 'ability';
+    abilityItem.append(`${ab.ability.name} `);
+    ability.append(abilityItem);
+
+    const size = document.createElement('p');
+    size.className = 'size';
+    size.append(`height: ${data.height}, weight: ${data.weight}`);
+    openCard.append(size);
+
+    data.stats.map(stat => {
+      const value = stat.base_stat;
+      const statsName = stat.stat.name;
+      const stats = document.createElement('div');
+      stats.className = 'stats';
+
+      const hp = value * 2 + 204;
+      const otherStat = Math.floor((value * 2 + 99) * 1.1);
+
+      if (statsName === 'hp') {
+        stats.innerHTML = `${statsName} <progress value='${value}' max='${hp}'></progress> ${value}`;
+      } else {
+        stats.innerHTML = `${statsName} <progress value='${value}' max='${otherStat}'></progress> ${value}`;
       }
 
-      const size = document.createElement('p');
-      size.className = 'size';
-      size.append(`height: ${data.height}, weight: ${data.weight}`);
-      openCard.append(size);
-
-      data.stats.map(stat => {
-        const value = stat.base_stat;
-        const statsName = stat.stat.name;
-        const stats = document.createElement('div');
-        stats.className = 'stats';
-
-        const hp = value * 2 + 204;
-        const otherStat = Math.floor((value * 2 + 99) * 1.1);
-
-        if (statsName === 'hp') {
-          stats.innerHTML = `${statsName} <progress value='${value}' max='${hp}'></progress> ${value}`;
-        } else {
-          stats.innerHTML = `${statsName} <progress value='${value}' max='${otherStat}'></progress> ${value}`;
-        }
-
-        openCard.append(stats);
-      });
-
-      return data.species.url;
-    })
-  
-    .then(species => fetch(species))
-    .then(response => response.json())
-    .then(data => {
-      data.flavor_text_entries.reverse();
-      for (let text of data.flavor_text_entries) {
-        if (text.language.name === 'en') {
-          const descr = document.createElement('p');
-          descr.className = 'descr';
-          openCard.append(descr);
-          return descr.innerHTML = text.flavor_text;
-        }
-      }
+      openCard.append(stats);
     });
+
+    const r = await fetch(data.species.url)
+    const species = await r.json()
+
+    species.flavor_text_entries.reverse();
+    for (let text of species.flavor_text_entries) {
+      if (text.language.name === 'en') {
+        const descr = document.createElement('p');
+        descr.className = 'descr';
+        openCard.append(descr);
+        return descr.innerHTML = text.flavor_text;
+      }
+    }
+  }
 }
 
 function closeCard(opacity, openCard) {
