@@ -36,10 +36,9 @@ async function createPoki(pokemons) {
   const urls = [];
   for (let pokemon of pokemons) urls.push(pokemon.url);
 
-  const requests = urls.map(url => fetch(url));
+  const requests = urls.map(url => getData(url));
 
   Promise.all(requests)
-    .then(responses => Promise.all(responses.map(r => r.json())))
     .then(url => url.forEach(url => {
       const card = document.createElement('div');
       card.className = 'card';
@@ -113,7 +112,7 @@ function openCard(card, pokemon, image) {
 async function generateInfo(pokemon, openCard) {
   const ability = document.createElement('p');
   openCard.append(ability);
-  
+
   for (let ab of pokemon.abilities) {
     const abilityItem = document.createElement('span');
     abilityItem.className = 'ability';
@@ -143,9 +142,7 @@ async function generateInfo(pokemon, openCard) {
       openCard.append(stats);
     });
 
-    const r = await fetch(pokemon.species.url);
-    const species = await r.json();
-
+    const species = await getData(pokemon.species.url);
     species.flavor_text_entries.reverse();
     for (let text of species.flavor_text_entries) {
       if (text.language.name === 'en') {
