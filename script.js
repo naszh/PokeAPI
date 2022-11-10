@@ -62,15 +62,15 @@ async function createPoki(pokemons) {
   }));
 };
 
-function goPrev() {
-  if (prevUrl) {
+function goPrev(e) {
+  if (prevUrl && e.detail === 1) {
     container.innerHTML = '';
     fetchPoki(prevUrl);
   };
 };
 
-function goNext() {
-  if (nextUrl) {
+function goNext(e) {
+  if (nextUrl && e.detail === 1) {
     container.innerHTML = '';
     fetchPoki(nextUrl);
   };
